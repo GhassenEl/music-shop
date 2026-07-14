@@ -10,6 +10,29 @@ function money(n) {
   }).format(Number(n || 0));
 }
 
+function imgSrc(url) {
+  if (!url) return '/products/gt-fstr.jpg';
+  // Images locales Vite public/
+  if (url.startsWith('/products/')) return url;
+  // Anciennes URLs externes cassées
+  if (url.includes('unsplash.com') || url.includes('http')) return '/products/gt-fstr.jpg';
+  return url.startsWith('/') ? url : `/products/${url}`;
+}
+
+function ProductImg({ src, alt }) {
+  return (
+    <img
+      src={imgSrc(src)}
+      alt={alt || ''}
+      loading="lazy"
+      onError={(e) => {
+        e.currentTarget.onerror = null;
+        e.currentTarget.src = '/products/gt-fstr.jpg';
+      }}
+    />
+  );
+}
+
 function DocPanel({ doc, onPay, paymentMethod, setPaymentMethod, busy }) {
   if (!doc) return null;
   const isReceipt = doc.type === 'receipt';
@@ -67,7 +90,7 @@ function DocPanel({ doc, onPay, paymentMethod, setPaymentMethod, busy }) {
             <tr key={it.id || `${it.productId}-${it.name}`}>
               <td>
                 <div className="line">
-                  {it.imageUrl && <img src={it.imageUrl} alt="" />}
+                  {it.imageUrl && <ProductImg src={it.imageUrl} alt="" />}
                   <span>
                     {it.brand} {it.name}
                   </span>
@@ -331,7 +354,7 @@ export default function App() {
           {products.map((p) => (
             <article key={p.id} className="product">
               <div className="photo">
-                <img src={p.imageUrl} alt={p.name} loading="lazy" />
+                <ProductImg src={p.imageUrl} alt={p.name} />
                 {p.discountPercent > 0 && <span className="sale">−{p.discountPercent}%</span>}
               </div>
               <div className="meta">
@@ -364,7 +387,9 @@ export default function App() {
             <ul>
               {cart.map((i) => (
                 <li key={i.productId}>
-                  <img src={i.imageUrl} alt="" />
+                  <img src={imgSrc(i.imageUrl)} alt=""
+                    onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/products/gt-fstr.jpg'; }}
+                  />
                   <div>
                     <strong>{i.name}</strong>
                     <span>{money(i.originalPrice)}</span>

@@ -1,21 +1,40 @@
 import { pool } from './db.js';
 
+/** Images servies par le front Vite: http://localhost:3100/products/... */
 const images = {
-  'GT-FSTR-001': 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=800&q=80',
-  'GT-LPS-002': 'https://images.unsplash.com/photo-1564186763535-ebb21ef5277f?auto=format&fit=crop&w=800&q=80',
-  'GT-AC-003': 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=800&q=80',
-  'BS-JB-010': 'https://images.unsplash.com/photo-1556449895-a33c9dba33dd?auto=format&fit=crop&w=800&q=80',
-  'BS-STG-011': 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80',
-  'DR-SPD-020': 'https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?auto=format&fit=crop&w=800&q=80',
-  'DR-ELEC-021': 'https://images.unsplash.com/photo-1571327073757-71ad63c2a91e?auto=format&fit=crop&w=800&q=80',
-  'KB-PSR-030': 'https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?auto=format&fit=crop&w=800&q=80',
-  'KB-NORD-031': 'https://images.unsplash.com/photo-1552422535-c45813c61732?auto=format&fit=crop&w=800&q=80',
-  'AM-VOX-040': 'https://images.unsplash.com/photo-1525201544353-043616f32786?auto=format&fit=crop&w=800&q=80',
-  'AM-MRSH-041': 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=800&q=80',
-  'AC-CAB-050': 'https://images.unsplash.com/photo-1516280440614-6697288d5d38?auto=format&fit=crop&w=800&q=80',
-  'AC-STR-051': 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=800&q=80',
-  'AC-STD-052': 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80',
-  'GT-IBZ-004': 'https://images.unsplash.com/photo-1516924962500-2b4b3b99ea02?auto=format&fit=crop&w=800&q=80',
+  'GT-FSTR-001': '/products/gt-fstr.jpg',
+  'GT-LPS-002': '/products/gt-lps.jpg',
+  'GT-AC-003': '/products/gt-ac.jpg',
+  'BS-JB-010': '/products/bs-jb.jpg',
+  'BS-STG-011': '/products/bs-stg.jpg',
+  'DR-SPD-020': '/products/dr-spd.jpg',
+  'DR-ELEC-021': '/products/dr-elec.jpg',
+  'KB-PSR-030': '/products/kb-psr.jpg',
+  'KB-NORD-031': '/products/kb-nord.jpg',
+  'AM-VOX-040': '/products/am-vox.jpg',
+  'AM-MRSH-041': '/products/am-mx.jpg',
+  'AC-CAB-050': '/products/ac-cab.jpg',
+  'AC-STR-051': '/products/ac-str.jpg',
+  'AC-STD-052': '/products/ac-std.jpg',
+  'GT-IBZ-004': '/products/gt-ibz.jpg',
+};
+
+const texts = {
+  'GT-FSTR-001': { name: 'Stratocaster Player', description: 'Guitare électrique polyvalente, corps aulne, micro single-coil.' },
+  'GT-LPS-002': { name: 'Les Paul Standard', description: 'Sons chauds et sustain, ideal rock / blues.' },
+  'GT-AC-003': { name: 'FG830 Acoustique', description: 'Acoustique solide pour débutants et composition.' },
+  'BS-JB-010': { name: 'Jazz Bass V', description: 'Basse 5 cordes, gorge confortable.' },
+  'BS-STG-011': { name: 'StingRay Special', description: 'Attack percussif signature StingRay.' },
+  'DR-SPD-020': { name: 'SpeedFire Drum Set', description: "Kit complet 5 fûts + cymbales d'initiation." },
+  'DR-ELEC-021': { name: 'TD-17KVX Electronic', description: 'Batterie électronique mesh pads, module TD-17.' },
+  'KB-PSR-030': { name: 'PSR-E473', description: 'Clavier arrangeur 61 touches, styles modernes.' },
+  'KB-NORD-031': { name: 'Nord Stage 4 Compact', description: 'Workstation scène, sons piano / orgue / synth.' },
+  'AM-VOX-040': { name: 'AC15C1', description: 'Combo à lampes 15W, son britannique classique.' },
+  'AM-MRSH-041': { name: 'MG10XU Mixer', description: 'Console 10 voies USB, effets SPX.' },
+  'AC-CAB-050': { name: 'Câble jack 6m Pro', description: 'Câble instrument blindé, connecteurs or.' },
+  'AC-STR-051': { name: 'Cordes EXL110', description: "Jeu nickel wound 10-46." },
+  'AC-STD-052': { name: 'Stand guitare X', description: 'Support stable pour guitare / basse.' },
+  'GT-IBZ-004': { name: 'RG450DXB', description: 'Guitare métal / hard rock, micro Quantum.' },
 };
 
 async function hasColumn(table, column) {
@@ -37,14 +56,21 @@ async function hasTable(table) {
 }
 
 async function migrate() {
+  await pool.query(`SET NAMES utf8mb4`);
+
   if (!(await hasColumn('products', 'image_url'))) {
     await pool.query(`ALTER TABLE products ADD COLUMN image_url VARCHAR(500) NULL AFTER image_emoji`);
     console.log('+ products.image_url');
   }
 
   for (const [sku, url] of Object.entries(images)) {
-    await pool.query(`UPDATE products SET image_url = :url WHERE sku = :sku`, { url, sku });
+    const t = texts[sku];
+    await pool.query(
+      `UPDATE products SET image_url = :url, name = :name, description = :description WHERE sku = :sku`,
+      { url, name: t.name, description: t.description, sku }
+    );
   }
+  console.log('images + textes UTF-8 mis à jour');
 
   if (!(await hasTable('seasonal_promotions'))) {
     await pool.query(`
@@ -74,8 +100,8 @@ async function migrate() {
   }
 
   const orderCols = [
-    ['invoice_number', `VARCHAR(40) NULL UNIQUE`],
-    ['receipt_number', `VARCHAR(40) NULL UNIQUE`],
+    ['invoice_number', `VARCHAR(40) NULL`],
+    ['receipt_number', `VARCHAR(40) NULL`],
     ['subtotal', `DECIMAL(10,2) NOT NULL DEFAULT 0`],
     ['discount_percent', `DECIMAL(5,2) NOT NULL DEFAULT 0`],
     ['discount_amount', `DECIMAL(10,2) NOT NULL DEFAULT 0`],
@@ -91,7 +117,6 @@ async function migrate() {
     }
   }
 
-  // Expand enum for invoiced
   await pool.query(`
     ALTER TABLE orders
     MODIFY status ENUM('pending','invoiced','paid','shipped','cancelled') NOT NULL DEFAULT 'pending'
