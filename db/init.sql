@@ -73,3 +73,7 @@ INSERT INTO products (sku, name, brand, category_id, price, stock, description, 
   ('AC-STR-051', 'Cordes EXL110', 'D''Addario', 6, 8.50, 100, 'Jeu nickel wound 10-46.', '🧵', 0),
   ('AC-STD-052', 'Stand guitare X', 'Hercules', 6, 39.00, 25, 'Support stable pour guitare / basse.', '🧰', 0),
   ('GT-IBZ-004', 'RG450DXB', 'Ibanez', 1, 449.00, 9, 'Guitare métal / hard rock, micro Quantum.', '🎸', 0);
+
+CREATE USER IF NOT EXISTS 'music'@'%' IDENTIFIED BY 'music123';
+GRANT ALL PRIVILEGES ON music_shop.* TO 'music'@'%';
+FLUSH PRIVILEGES;

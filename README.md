@@ -6,7 +6,7 @@ Shop virtuel **React + Node.js/Express + MySQL** (API JSON).
 |--------|------|
 | React (Vite) | **3100** |
 | Express API | **5100** |
-| MySQL (Docker) | **3307** |
+| MySQL (Docker) | **3310** |
 
 ## Prérequis
 
@@ -46,6 +46,6 @@ npm run dev:web
 
 ## Creds MySQL (dev)
 
-- Host: `127.0.0.1:3307`
+- Host: `127.0.0.1:3310`
 - DB: `music_shop`
-- User: `music` / `music123`
+- User: `root` / `root` (app) — aussi `music` / `music123`
