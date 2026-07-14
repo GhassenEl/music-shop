@@ -35,14 +35,22 @@ npm run dev:web
 - API : http://localhost:5100/api/v1  
 - Health : http://localhost:5100/api/v1/health  
 
-## API
+## Flux commande
 
-- `GET /api/v1/categories`
-- `GET /api/v1/products?category=&q=`
-- `GET /api/v1/products/:id`
-- `GET /api/v1/stats`
-- `POST /api/v1/orders` — body JSON `{ customer, items }`
-- `GET /api/v1/orders`
+1. Ajouter au panier (prix déjà remisé si promo saisonnière active)
+2. **Passer commande** → facture `FAC-YYYY-xxxxx`
+3. **Payer** (carte / espèces / virement / PayPal) → reçu `REC-YYYY-xxxxx`
+
+Remise été **ETE2026 −15%** active du 01/06/2026 au 31/08/2026.
+
+## API utile
+
+- `GET /api/v1/promotions/active`
+- `POST /api/v1/orders` → commande + facture
+- `GET /api/v1/orders/:id/invoice`
+- `POST /api/v1/orders/:id/pay`
+- `GET /api/v1/orders/:id/receipt`
+
 
 ## Creds MySQL (dev)
 

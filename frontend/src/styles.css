@@ -215,5 +215,200 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
   grid-template-columns: 1fr auto;
   font-size: 0.82rem;
   color: var(--muted);
+  gap: 0.35rem;
+  align-items: center;
 }
 .orders em { font-style: normal; color: var(--amber); }
+
+.promo-banner {
+  margin-top: 0.9rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(232, 168, 56, 0.45);
+  background: linear-gradient(90deg, rgba(232, 168, 56, 0.22), rgba(212, 101, 74, 0.12));
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: baseline;
+}
+
+.promo-banner span { color: var(--muted); font-size: 0.9rem; }
+
+.photo {
+  position: relative;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: #241910;
+}
+
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.sale {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  background: var(--rose);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+}
+
+.price { display: grid; gap: 0.1rem; }
+.price s { color: var(--muted); font-size: 0.8rem; }
+
+.cart li {
+  grid-template-columns: 2.4rem 1fr 3.6rem;
+}
+
+.cart li img {
+  width: 2.4rem;
+  height: 2.4rem;
+  object-fit: cover;
+  border-radius: 0.4rem;
+}
+
+.totals {
+  margin: 0.85rem 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.totals.mini { font-size: 0.9rem; }
+.totals > div {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+}
+.totals .grand {
+  color: var(--ink);
+  font-size: 1.05rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid var(--line);
+}
+
+.linkish {
+  background: transparent;
+  color: var(--ink);
+  padding: 0;
+  text-align: left;
+  font-weight: 600;
+  color: #ffd7a8;
+}
+
+.doc {
+  margin-top: 1.25rem;
+  padding: 1.2rem;
+  border-radius: 1rem;
+  border: 1px solid var(--line);
+  background: rgba(28, 20, 14, 0.95);
+}
+
+.doc.receipt { border-color: rgba(52, 211, 153, 0.35); }
+.doc-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.doc-head h2 {
+  margin: 0.15rem 0;
+  font-family: "Bebas Neue", sans-serif;
+  letter-spacing: 0.04em;
+}
+
+.badge {
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: rgba(232, 168, 56, 0.2);
+  color: var(--amber);
+}
+.badge.paid { background: rgba(52, 211, 153, 0.18); color: #86efac; }
+.badge.invoiced { background: rgba(96, 165, 250, 0.18); color: #93c5fd; }
+
+.doc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.doc-grid h4 { margin: 0 0 0.3rem; color: var(--amber); }
+.doc-grid p { margin: 0.15rem 0; color: var(--muted); font-size: 0.9rem; }
+
+.doc table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.doc th, .doc td {
+  text-align: left;
+  padding: 0.55rem 0.35rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.line {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+}
+
+.line img {
+  width: 2.2rem;
+  height: 2.2rem;
+  object-fit: cover;
+  border-radius: 0.35rem;
+}
+
+.pay-box {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem;
+  align-items: end;
+  margin-top: 0.75rem;
+}
+
+.pay-box label {
+  display: grid;
+  gap: 0.3rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.pay-box select {
+  padding: 0.65rem 0.75rem;
+  border-radius: 0.55rem;
+  border: 1px solid rgba(185, 168, 152, 0.35);
+  background: #1c1410;
+  color: var(--ink);
+  font: inherit;
+}
+
+button.pay {
+  background: #059669;
+  color: #fff;
+}
+
+.thanks {
+  margin: 0.85rem 0 0;
+  color: #86efac;
+  font-weight: 700;
+}
+
+@media (max-width: 700px) {
+  .doc-grid, .pay-box { grid-template-columns: 1fr; }
+}

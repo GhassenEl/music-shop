@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "wait-db": "node src/wait-db.js",
+    "migrate": "node src/migrate.js",
     "dev": "node --watch src/index.js",
-    "start": "node src/index.js",
-    "wait-db": "node src/wait-db.js"
+    "start": "node src/index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
